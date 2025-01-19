@@ -8,12 +8,12 @@ def isAscending(items):
 
 #################################################
 list1 = [1, 17, 29, 23, 12, 4, 13, 2, 7, 9, 8]
+
 def bubbleSort(numbers):
-    for j in range(len(numbers) - 1):
-        if numbers[j] > numbers[j + 1]:
-            temp = numbers[j+1]
-            numbers[j+1] = numbers[j]
-            numbers[j] = temp
+    for i in range(len(numbers) - 1): 
+        for j in range(len(numbers) - 1 - i): 
+            if numbers[j] > numbers[j + 1]:
+                numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
     return numbers
 
 print(bubbleSort(list1))
