@@ -8,40 +8,44 @@ items = {
     "Chocolate Sundae": 3.00,
     "Apple pie": 2.50,
     "Milkshake": 4.20,
-    "Coke per gram": 420.50
+    "Coke": 420.50
 }
 
 def display_menu(items):
     print("*****Welcome to HanBaoBao!*****\n*****This is our menu!*****\n")
     for item, price in items.items():
         print(f"{item}: ${price:.2f}")
+    print("\n************ End of Menu ************\n")
 
 def order_item(orders, items):
-    order = input("What would you like to order? (Type 'no more' to finish): ")
+    order = input("What would you like to order? (Type 'no more' to finish): ").lower()
     while order != "no more":
-        if order in items:
-            choice = input(f"Are you sure that you want to order {order}? (y/n): ")
-            if choice.lower() == "y":
-                if order in orders:
-                    orders[order] += 1
-                else:
-                    orders[order] = 1
-                print(f"Order made for {order}!")
-            else:
-                print(f"Order canceled for {order}.")
-        else:
-            print("Sorry, that item isn't on the menu. Please try again.")
+        found_item = None
+        for item in items:
+            if item.lower() == order:
+                found_item = item
+                break
         
-        order = input("What would you like to order? (Type 'no more' to finish): ")
+        if found_item:
+            if found_item in orders:
+                orders[found_item] += 1
+                print(f"Order made for {found_item}!")
+            else:
+                orders[found_item] = 1
+                print(f"Order made for {found_item}!")
+        else:
+            print("That order is not in the menu....")
+        
+        order = input("What would you like to order? (Type 'no more' to finish): ").lower()
 
 def show_order_summary(orders, items):
-    print("\n***** Your Order Summary *****")
+    print("\n***** Order Summary *****\n")
     total = 0
     for item, quantity in orders.items():
-        print(f"{item}: {quantity} x ${items[item]:.2f} = ${items[item] * quantity:.2f}")
+        print(f"{item} x{quantity}: ${items[item] * quantity:.2f}")
         total += items[item] * quantity
     print(f"Total: ${total:.2f}")
-    print("Thank you for ordering!")
+    print("Thanks for ordering!")
 
 display_menu(items)
 orders = {}
@@ -49,4 +53,4 @@ order_item(orders, items)
 if orders:
     show_order_summary(orders, items)
 else:
-    print("You didn't order anything.")
+    print(" You didn't order anything.")
