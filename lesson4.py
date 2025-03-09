@@ -7,9 +7,9 @@ students = {
 }
 
 def show_menu():
-    print("****** School Attendance System ******\n 1. Take Attendance \n 2. Calculate Attendance Percenatage For A Student\n 3. Notify Low Attendance\n 4. Exit Program\n")
+    print("****** School Attendance System ******\n 1. Take Attendance \n 2. Calculate Attendance Percentage For A Student\n 3. Notify Low Attendance\n 4. Exit Program\n")
     choice = int(input("Enter your choice: "))
-    
+    return choice
 
 def take_attendance(students: dict) -> dict:
     print("Taking Class Attendance Now...")
@@ -27,9 +27,6 @@ def take_attendance(students: dict) -> dict:
     print("Class attendance is taken.")
     return students
 
-updated_students = take_attendance(students)
-print(updated_students)
-
 def attendance_percentage(student: str, students: dict) -> float:
     if student in students:
         attendance_list = students[student]
@@ -44,10 +41,23 @@ def notifyLowAttendance(student: str, attendance: float):
     if attendance is not None and attendance < 50:
         print(f"{student} has a low attendance! ({attendance}% attendance)")
 
-studente = str(input("Which student would you like to check?: "))
-value = attendance_percentage(studente, students)
-if value is not None:
-    print(f"{studente} attendance: {value}%")
-    notifyLowAttendance(studente, value)
+while True:
+    choice = show_menu()
 
-notifyLowAttendance("Jake")
+    if choice == 1:
+        students = take_attendance(students)
+    elif choice == 2:
+        student = input("Which student would you like to check?: ")
+        value = attendance_percentage(student, students)
+        if value is not None:
+            print(f"{student}'s attendance: {value}%")
+    elif choice == 3:
+        student = input("Which student would you like to check for low attendance?: ")
+        value = attendance_percentage(student, students)
+        if value is not None:
+            notifyLowAttendance(student, value)
+    elif choice == 4:
+        print("Exiting program...")
+        break
+    else:
+        print("Invalid choice, please try again.")
