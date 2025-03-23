@@ -20,12 +20,7 @@ def create_new_file(fullpath: str) -> None:
             file.write("") 
         print(f"The file {fullpath} has been created.")
 
-def view_tasks(fullpath: str) -> None:
-    """Displays the tasks from the file."""
-    if not os.path.exists(fullpath):
-        print("No tasks found. The file does not exist.")
-        return
-    
+def view_all_tasks(fullpath: str) -> None:
     with open(fullpath, 'r') as file:
         tasks = file.readlines()
     
@@ -38,7 +33,7 @@ def view_tasks(fullpath: str) -> None:
 
 def display_tasks(fullpath: str) -> None:
     """Displays tasks."""
-    view_tasks(fullpath)
+    view_all_tasks(fullpath)
 
 def add_task(fullpath: str) -> None:
     """Adds a new task to the tasks file."""
@@ -51,34 +46,29 @@ def add_task(fullpath: str) -> None:
         print("Task cannot be empty.")
 
 def mark_task_done(fullpath: str) -> None:
-    """Marks a task as done by removing it or appending 'done' to it."""
-    if not os.path.exists(fullpath):
-        print("No tasks found. The file does not exist.")
+    print("\n Marking a task as done...")
+    lines = view_all_tasks(fullpath)
+    if len(lines) <- 1:
+        print("\nNo tasks available to mark as done!")
         return
-
-    with open(fullpath, 'r') as file:
-        tasks = file.readlines()
-
-    if not tasks:
-        print("No tasks to mark as done.")
+    task_number = int(input("\nEnter the task number to mark as done:"))
+    if task_number < 1 or task_number > len(lines) - 1:
+        print("\n Invalid task number. Try again!!")
         return
+    task_index = task_number
+    if "[DONE]" in lines[task_index]:
+        print("\nThis task is already marked as done!")
+    else:
+        lines[task_index] = lines[task_index].strip() + " [DONE]\n"
+        print("\n Marked task as done")
+    with open(fullpath, "w") as taskfile:
+        taskfile.writelines(lines)
 
-    view_tasks(fullpath)  # Display the current tasks
-    try:
-        task_number = int(input("Enter the number of the task to mark as done: "))
-        if 1 <= task_number <= len(tasks):
-            task = tasks[task_number - 1].strip()
-            # Marking the task as done by appending " [done]"
-            tasks[task_number - 1] = f"{task} [done]\n"
-            
-            with open(fullpath, 'w') as file:
-                file.writelines(tasks)
-            
-            print(f"Task marked as done: {task}")
-        else:
-            print("Invalid task number.")
-    except ValueError:
-        print("Invalid input. Please enter a valid task number.")
+
+
+
+
+
 
 # Main program
 create_new_file(FULLPATH)
